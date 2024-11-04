@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Viewer": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

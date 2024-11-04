@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net9.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UseWPF>true</UseWPF>
+		<RunPostBuildEvent>Always</RunPostBuildEvent>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	</PropertyGroup>
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+	  <Exec Command="xcopy /y &quot;$(SolutionDir)\x64\$(Configuration)\&quot; &quot;C:\Users\capop\source\repos\NilsInfinite.EquationOfStateViewer\Viewer\bin\$(Configuration)\net9.0-windows&quot;" />
+	</Target>
+
+	<ItemGroup>
+	  <None Remove="WaterSteamEquationOfState.dll" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Include="WaterSteamEquationOfState.dll">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="OxyPlot.Core" Version="2.2.0" />
+	  <PackageReference Include="OxyPlot.Wpf" Version="2.2.0" />
+	</ItemGroup>
+</Project>

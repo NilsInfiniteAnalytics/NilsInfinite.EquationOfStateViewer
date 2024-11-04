@@ -1,0 +1,188 @@
+﻿<Window x:Class="Viewer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:oxy="http://oxyplot.org/wpf"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewer="clr-namespace:Viewer"
+        mc:Ignorable="d"
+        Title="NilsInfinite.EOSViewer" Height="800" Width="1000" 
+        d:DataContext="{d:DesignInstance viewer:MainWindow}">
+    <Grid>
+        <!-- Menu Bar -->
+        <Menu VerticalAlignment="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="Set Database Path" Click="SetDatabasePath_Click"/>
+                <Separator/>
+                <MenuItem Header="E_xit" Click="Exit_Click"/>
+            </MenuItem>
+        </Menu>
+
+        <!-- Main Content -->
+        <TabControl Margin="0,25,0,0" TabStripPlacement="Bottom">
+            <TabItem Header="Iso-Properties">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Plot Type and Property Selection Input Group -->
+                    <GroupBox Header="Plot Type and Property" Grid.Row="0" Margin="0,0,0,10">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column ="0" Orientation="Horizontal" Margin="10">
+                                <Label Content="Plot Type:" VerticalAlignment="Center"/>
+                                <ComboBox x:Name="PlotTypeComboBox" 
+                                          Width="100" 
+                                          Margin="5,0" 
+                                          SelectionChanged="PlotTypeComboBox_SelectionChanged"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="10">
+                                <Label Content="Property:" VerticalAlignment="Center" Margin="20,0,0,0"/>
+                                <ComboBox x:Name="PropertyComboBox" Width="200" Margin="5,0" IsEnabled="False"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="10">
+                                <Button Content="Plot" Click="PlotButton_Click" x:Name="PlotButton" Width="100"/>
+                            </StackPanel>
+                        </Grid>
+                    </GroupBox>
+
+                    <!-- Iso-Bar/Iso-Therm Input Group Box -->
+                    <GroupBox Header="Input Values" Grid.Row="1" Margin="0,0,0,10">
+                        <Grid Margin="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Iso-Bar Inputs -->
+                            <StackPanel x:Name="IsoBarInput" Visibility="Visible" Grid.Column="0">
+                                <Label Content="Pressure Values:"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                                    <Slider x:Name="PressureSlider" Minimum="0.1" Maximum="100" Value="1" Width="200" Margin="5,0" TickFrequency="0.5" IsSnapToTickEnabled="True"/>
+                                    <TextBox x:Name="PressureTextBox" Text="{Binding ElementName=PressureSlider, Path=Value, StringFormat=F2}" Width="60" Margin="5,0"/>
+                                    <ComboBox x:Name="PressureUnitComboBox" Width="60" Margin="5,0" />
+                                    <Button Content="Add Pressure" Click="AddIsoBarButton_Click" Margin="10,0,0,0"/>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <ListBox x:Name="IsoBarListBox" 
+                                     ItemsSource="{Binding IsoBarValues}"
+                                     Grid.Column="1" 
+                                     Width="400" 
+                                     Height="100" 
+                                     Margin="10,0,0,0" 
+                                     Visibility="Visible">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding}" Width="60"/>
+                                            <Button Content="Remove" Click="RemoveIsoBarItem"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+
+                            <!-- Iso-Therm Inputs -->
+                            <StackPanel x:Name="IsoThermInput" Visibility="Collapsed" Grid.Column="0">
+                                <Label Content="Temperature Values:"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                                    <Slider x:Name="TemperatureSlider" Minimum="273.16" Maximum="1000" Value="300.0" Width="200" Margin="5,0" TickFrequency="1" IsSnapToTickEnabled="True"/>
+                                    <TextBox x:Name="TemperatureTextBox" Text="{Binding ElementName=TemperatureSlider, Path=Value, StringFormat=F2}" Width="60" Margin="5,0"/>
+                                    <ComboBox x:Name="TemperatureUnitComboBox" Width="60" Margin="5,0"/>
+                                    <Button Content="Add Temperature" Click="AddIsoThermButton_Click" Margin="10,0,0,0"/>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <ListBox x:Name="IsoThermListBox" 
+                                     ItemsSource="{Binding IsoThermValues}"
+                                     Grid.Column="1" 
+                                     Width="400" 
+                                     Height="100" 
+                                     Margin="10,0,0,0" 
+                                     Visibility="Collapsed">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding}" Width="60" Margin="10"/>
+                                            <Button Content="Remove" Click="RemoveIsoThermItem" Margin="10"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Grid>
+                    </GroupBox>
+
+                    <!-- Plot Group Box -->
+                    <GroupBox Header="Plot" Grid.Row="3">
+                        <oxy:PlotView x:Name="PlotView"/>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Summary Properties">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Input Group Box for Calculator -->
+                    <GroupBox Header="Input Values" Grid.Row="0" Margin="0,0,0,10">
+                        <Grid Margin="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- Pressure Input Row -->
+                            <StackPanel Grid.Row="0" Orientation="Horizontal">
+                                <Label Content="Pressure:" VerticalAlignment="Center"/>
+                                <Slider x:Name="CalcPressureSlider" Minimum="0.1" Maximum="100" Value="1" Width="200"
+                                        TickFrequency="0.5" IsSnapToTickEnabled="True" Margin="10"/>
+                                <TextBox Text="{Binding ElementName=CalcPressureSlider, Path=Value, StringFormat=F2}" Width="60" Margin="10"/>
+                                <ComboBox x:Name="CalcPressureUnitComboBox" Width="60"
+                                          SelectionChanged="CalcPressureUnitComboBox_SelectionChanged" Margin="10"/>
+                            </StackPanel>
+                            
+
+                            <!-- Temperature Input Row -->
+                            <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
+                                <Label Content="Temperature:" VerticalAlignment="Center"/>
+                                <Slider x:Name="CalcTemperatureSlider" Minimum="273.16" Maximum="1000" Value="300.0" Width="200"
+                                        TickFrequency="1" IsSnapToTickEnabled="True" Margin="10"/>
+                                <TextBox Text="{Binding ElementName=CalcTemperatureSlider, Path=Value, StringFormat=F2}" Width="60" Margin="10" />
+                                <ComboBox x:Name="CalcTemperatureUnitComboBox" Width="60"
+                                          SelectionChanged="CalcTemperatureUnitComboBox_SelectionChanged" Margin="10"/>
+                            </StackPanel>
+                            
+
+                            <!-- Calculate Button -->
+                            <Button Content="Calculate Properties" Click="CalculateProperties_Click" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" HorizontalAlignment="Left" Margin="0,10,0,0"/>
+                        </Grid>
+                    </GroupBox>
+
+                    <!-- Output Group Box for Displaying Calculated Properties -->
+                    <GroupBox Header="Calculated Properties" Grid.Row="1" Margin="0,0,0,10">
+                        <StackPanel x:Name="PropertiesResultStack" Margin="10"/>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+
+        </TabControl>
+    </Grid>
+</Window>
