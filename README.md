@@ -18,7 +18,7 @@ It provides a user-friendly interface to input parameters for generating graphic
 ## Local Build Steps
 1. Ensure you have the [NilsInfinite.EquationOfState](https://github.com/NilsInfiniteAnalytics/NilsInfinite.EquationsOfState) project pulled and built.
 2. Adjust the path to the WaterSteamEquationOfState.dll to your built file location. Add to the project if it's not available.
-3. Ensure the dll has a Content Build Action, and Copy To Output Directory is set to Copy Always.[
+3. Ensure the dll has a Content Build Action, and Copy To Output Directory is set to Copy Always.
 4. Ensure Viewer is set as the start-up project.
 5. Run!
 
