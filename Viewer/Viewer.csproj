@@ -10,10 +10,6 @@
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
 
-	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-	  <Exec Command="xcopy /y &quot;$(SolutionDir)\x64\$(Configuration)\&quot; &quot;C:\Users\capop\source\repos\NilsInfinite.EquationOfStateViewer\Viewer\bin\$(Configuration)\net9.0-windows&quot;" />
-	</Target>
-
 	<ItemGroup>
 	  <None Remove="WaterSteamEquationOfState.dll" />
 	</ItemGroup>
