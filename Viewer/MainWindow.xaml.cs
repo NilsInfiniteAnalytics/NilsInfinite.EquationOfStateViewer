@@ -99,9 +99,9 @@ public partial class MainWindow
         { ThermodynamicProperty.SpecificIsochoricHeatCapacity, "Specific Heat Capacity Cv (kJ/(kg·K))" },
         { ThermodynamicProperty.SpeedOfSound, "Speed of Sound (m/s)" }
     };
-    private const double MinPressureMPa = 0.01;
+    private const double MinPressureMPa = 0.0001;
     private const double MaxPressureMPa = 100;
-    private const double MinTemperatureK = 273.16;
+    private const double MinTemperatureK = 190;
     private const double MaxTemperatureBelow50MPa = 2273.15;
     private const double MaxTemperatureAbove50MPa = 1073.15;
 
@@ -420,6 +420,40 @@ public partial class MainWindow
     private void TemperatureUnitComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         UpdateTemperatureSliderLimits();
+    }
+
+    private void ApplyAxisLimits_Click(object sender, RoutedEventArgs e)
+    {
+        if (PlotView.Model is not { } plotModel)
+            return;
+
+        try
+        {
+            var xMin = double.Parse(XAxisMinTextBox.Text);
+            var xMax = double.Parse(XAxisMaxTextBox.Text);
+            var yMin = double.Parse(YAxisMinTextBox.Text);
+            var yMax = double.Parse(YAxisMaxTextBox.Text);
+
+            var xAxis = plotModel.Axes.FirstOrDefault(a => a.Position == AxisPosition.Bottom);
+            if (xAxis != null)
+            {
+                xAxis.Minimum = xMin;
+                xAxis.Maximum = xMax;
+            }
+
+            var yAxis = plotModel.Axes.FirstOrDefault(a => a.Position == AxisPosition.Left);
+            if (yAxis != null)
+            {
+                yAxis.Minimum = yMin;
+                yAxis.Maximum = yMax;
+            }
+
+            plotModel.InvalidatePlot(true);
+        }
+        catch (FormatException)
+        {
+            MessageBox.Show("Please enter valid numeric values for axis limits.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
     }
 
     #endregion

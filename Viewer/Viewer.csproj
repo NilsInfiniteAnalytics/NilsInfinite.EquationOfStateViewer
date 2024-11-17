@@ -11,17 +11,22 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="WaterSteamEquationOfState.dll" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Content Include="WaterSteamEquationOfState.dll">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </Content>
-	</ItemGroup>
-
-	<ItemGroup>
 	  <PackageReference Include="OxyPlot.Core" Version="2.2.0" />
 	  <PackageReference Include="OxyPlot.Wpf" Version="2.2.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="WaterSteamEquationOfState.dll">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="WaterSteamEquationOfState.exp">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="WaterSteamEquationOfState.lib">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="WaterSteamEquationOfState.pdb">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 </Project>

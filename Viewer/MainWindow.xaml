@@ -66,7 +66,7 @@
                             <StackPanel x:Name="IsoBarInput" Visibility="Visible" Grid.Column="0">
                                 <Label Content="Pressure Values:"/>
                                 <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                                    <Slider x:Name="PressureSlider" Minimum="0.1" Maximum="100" Value="1" Width="200" Margin="5,0" TickFrequency="0.5" IsSnapToTickEnabled="True"/>
+                                    <Slider x:Name="PressureSlider" Minimum="0.00001" Maximum="100" Value="1" Width="200" Margin="5,0" TickFrequency="0.5" IsSnapToTickEnabled="True"/>
                                     <TextBox x:Name="PressureTextBox" Text="{Binding ElementName=PressureSlider, Path=Value, StringFormat=F2}" Width="60" Margin="5,0"/>
                                     <ComboBox x:Name="PressureUnitComboBox" Width="60" Margin="5,0" />
                                     <Button Content="Add Pressure" Click="AddIsoBarButton_Click" Margin="10,0,0,0"/>
@@ -83,7 +83,7 @@
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding}" Width="60"/>
+                                            <TextBlock Text="{Binding}" Width="60" Margin="2"/>
                                             <Button Content="Remove" Click="RemoveIsoBarItem"/>
                                         </StackPanel>
                                     </DataTemplate>
@@ -94,7 +94,7 @@
                             <StackPanel x:Name="IsoThermInput" Visibility="Collapsed" Grid.Column="0">
                                 <Label Content="Temperature Values:"/>
                                 <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                                    <Slider x:Name="TemperatureSlider" Minimum="273.16" Maximum="1000" Value="300.0" Width="200" Margin="5,0" TickFrequency="1" IsSnapToTickEnabled="True"/>
+                                    <Slider x:Name="TemperatureSlider" Minimum="190" Maximum="1000" Value="300.0" Width="200" Margin="5,0" TickFrequency="1" IsSnapToTickEnabled="True"/>
                                     <TextBox x:Name="TemperatureTextBox" Text="{Binding ElementName=TemperatureSlider, Path=Value, StringFormat=F2}" Width="60" Margin="5,0"/>
                                     <ComboBox x:Name="TemperatureUnitComboBox" Width="60" Margin="5,0"/>
                                     <Button Content="Add Temperature" Click="AddIsoThermButton_Click" Margin="10,0,0,0"/>
@@ -111,7 +111,7 @@
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding}" Width="60" Margin="10"/>
+                                            <TextBlock Text="{Binding}" Width="60" Margin="2"/>
                                             <Button Content="Remove" Click="RemoveIsoThermItem" Margin="10"/>
                                         </StackPanel>
                                     </DataTemplate>
@@ -122,7 +122,26 @@
 
                     <!-- Plot Group Box -->
                     <GroupBox Header="Plot" Grid.Row="3">
-                        <oxy:PlotView x:Name="PlotView"/>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <ToolBarTray Grid.Row="0" Margin="0,0,0,10">
+                                <ToolBar Header="Axis Controls">
+                                    <Label Content="X Min:"/>
+                                    <TextBox x:Name="XAxisMinTextBox" Width="60" Text="0" Margin="5"/>
+                                    <Label Content="X Max:"/>
+                                    <TextBox x:Name="XAxisMaxTextBox" Width="60" Text="100" Margin="5"/>
+                                    <Label Content="Y Min:"/>
+                                    <TextBox x:Name="YAxisMinTextBox" Width="60" Text="0" Margin="5"/>
+                                    <Label Content="Y Max:"/>
+                                    <TextBox x:Name="YAxisMaxTextBox" Width="60" Text="100" Margin="5"/>
+                                    <Button Content="Apply" Click="ApplyAxisLimits_Click" Margin="10,0,0,0"/>
+                                </ToolBar>
+                            </ToolBarTray>
+                            <oxy:PlotView Grid.Row="1" x:Name="PlotView" Margin="0"/>
+                        </Grid>
                     </GroupBox>
                 </Grid>
             </TabItem>
@@ -158,7 +177,7 @@
                                 <ComboBox x:Name="CalcPressureUnitComboBox" Width="60"
                                           SelectionChanged="CalcPressureUnitComboBox_SelectionChanged" Margin="10"/>
                             </StackPanel>
-                            
+
 
                             <!-- Temperature Input Row -->
                             <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
@@ -169,7 +188,7 @@
                                 <ComboBox x:Name="CalcTemperatureUnitComboBox" Width="60"
                                           SelectionChanged="CalcTemperatureUnitComboBox_SelectionChanged" Margin="10"/>
                             </StackPanel>
-                            
+
 
                             <!-- Calculate Button -->
                             <Button Content="Calculate Properties" Click="CalculateProperties_Click" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" HorizontalAlignment="Left" Margin="0,10,0,0"/>
